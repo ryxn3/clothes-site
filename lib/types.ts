@@ -48,6 +48,7 @@ export interface Hotspot {
 
 export interface CartLine {
   id: string;
+  slug: string;
   color: ColorId;
   size: SizeId;
   quantity: number;
@@ -57,4 +58,20 @@ export interface StatItem {
   value: number;
   suffix: string;
   label: string;
+}
+
+/** Garment silhouette used to render the brand-illustration for catalog products. */
+export type GarmentType = "shorts" | "sweatpants" | "hoodie" | "zip-hoodie" | "tee";
+
+export interface Product {
+  slug: string;
+  name: string;
+  price: number;
+  garment: GarmentType;
+  tagline: string;
+  description: string;
+  material: string;
+  feature: string;
+  rating: number;
+  reviewCount: number;
 }

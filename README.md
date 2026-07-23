@@ -1,8 +1,9 @@
-# Hidden Pocket Corduroy Shorts
+# Hidden Pocket
 
-A premium, single-product e-commerce experience built with Next.js (App
-Router), TypeScript, Tailwind CSS, React Three Fiber, Framer Motion, and
-GSAP — showcasing the **Hidden Pocket Corduroy Shorts** ($45). Deployed as a
+A premium e-commerce experience built with Next.js (App Router), TypeScript,
+Tailwind CSS, React Three Fiber, Framer Motion, and GSAP — showcasing the
+**Hidden Pocket** collection: corduroy shorts, sweatpants, a hoodie, a zip
+hoodie, and a tee, each with a concealed interior zip pocket. Deployed as a
 static export so it can be hosted for free on **GitHub Pages**.
 
 **Live site:** `https://<your-github-username>.github.io/clothes-site/`
@@ -10,12 +11,15 @@ static export so it can be hosted for free on **GitHub Pages**.
 
 ## Features
 
+- A 5-product catalog (`/shop`) — shorts, sweatpants, hoodie, zip hoodie, tee
+  — each with its own product page (`/products/[slug]`), color/size
+  selectors, and a shared cart that spans products
 - Cinematic hero with animated gradients, floating particles, and staggered
   text reveal (GSAP)
-- Interactive 3D product viewer (React Three Fiber + Drei): drag to rotate,
-  scroll to zoom, auto-rotate, procedurally generated corduroy fabric texture,
-  and clickable hotspots (Hidden Pocket, Elastic Waist, Drawstrings, Cotton
-  Fabric)
+- Interactive 3D product viewer (React Three Fiber + Drei) for the flagship
+  shorts: drag to rotate, scroll to zoom, auto-rotate, procedurally
+  generated corduroy fabric texture, and clickable hotspots (Hidden Pocket,
+  Elastic Waist, Drawstrings, Cotton Fabric)
 - Hidden pocket reveal animation — clicking the "Hidden Pocket" hotspot opens
   an interior flap and sequences a phone, wallet, passport, keys, and earbuds
   sliding into the concealed pocket cavity
@@ -36,11 +40,13 @@ static export so it can be hosted for free on **GitHub Pages**.
 
 ### About the visuals
 
-There is no stock photography in this project — every product image is a
-lightweight, brand-consistent SVG illustration or a live, procedurally
-textured 3D model generated at runtime (the corduroy weave is painted onto a
-`<canvas>` and applied as a Three.js texture). This keeps the project fully
-self-contained with zero external image dependencies.
+The flagship shorts use real product photography (`public/products/*.jpg`)
+plus a live, procedurally textured 3D model (the corduroy weave is painted
+onto a `<canvas>` and applied as a Three.js texture). The rest of the
+collection — sweatpants, hoodie, zip hoodie, tee — doesn't have photography
+yet, so those use brand-consistent SVG illustrations
+(`components/ui/GarmentIllustration.tsx`). Swap in real photos by adding
+them to `public/products/` and updating `ProductThumbnail` once available.
 
 ## Why a Payment Link instead of a Checkout API route
 

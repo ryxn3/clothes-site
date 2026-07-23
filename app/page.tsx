@@ -4,6 +4,7 @@ import { ProductPhotoShowcase } from "@/components/sections/ProductPhotoShowcase
 import { ProductSection } from "@/components/sections/ProductSection";
 import { LifestyleShowcase } from "@/components/sections/LifestyleShowcase";
 import { ColorGallery } from "@/components/sections/ColorGallery";
+import { CollectionTeaser } from "@/components/sections/CollectionTeaser";
 import { ReviewsSection } from "@/components/sections/ReviewsSection";
 import { StatsSection } from "@/components/sections/StatsSection";
 import { FAQSection } from "@/components/sections/FAQSection";
@@ -18,6 +19,7 @@ export default function HomePage() {
       <ProductSection />
       <LifestyleShowcase />
       <ColorGallery />
+      <CollectionTeaser />
       <StatsSection />
       <ReviewsSection />
       <FAQSection />

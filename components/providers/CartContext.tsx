@@ -9,14 +9,14 @@ import {
   useState,
 } from "react";
 import { CartLine, ColorId, SizeId } from "@/lib/types";
-import { PRODUCT } from "@/lib/products";
+import { getProductBySlug } from "@/lib/products";
 
 interface CartContextValue {
   lines: CartLine[];
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
-  addToCart: (color: ColorId, size: SizeId, quantity?: number) => void;
+  addToCart: (slug: string, color: ColorId, size: SizeId, quantity?: number) => void;
   removeLine: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   subtotal: number;
@@ -49,9 +49,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [lines, hydrated]);
 
   const addToCart = useCallback(
-    (color: ColorId, size: SizeId, quantity = 1) => {
+    (slug: string, color: ColorId, size: SizeId, quantity = 1) => {
       setLines((prev) => {
-        const id = `${color}-${size}`;
+        const id = `${slug}-${color}-${size}`;
         const existing = prev.find((l) => l.id === id);
         let next: CartLine[];
         if (existing) {
@@ -59,9 +59,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             l.id === id ? { ...l, quantity: l.quantity + quantity } : l
           );
         } else {
-          next = [...prev, { id, color, size, quantity }];
+          next = [...prev, { id, slug, color, size, quantity }];
         }
-        setLastAdded({ id, color, size, quantity });
+        setLastAdded({ id, slug, color, size, quantity });
         return next;
       });
       setIsOpen(true);
@@ -82,7 +82,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const subtotal = useMemo(
-    () => lines.reduce((sum, l) => sum + l.quantity * PRODUCT.price, 0),
+    () =>
+      lines.reduce((sum, l) => {
+        const price = getProductBySlug(l.slug)?.price ?? 0;
+        return sum + l.quantity * price;
+      }, 0),
     [lines]
   );
 

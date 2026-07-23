@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineXMark, HiOutlineMinus, HiOutlinePlus, HiOutlineShoppingBag } from "react-icons/hi2";
 import { useCart } from "@/components/providers/CartContext";
-import { COLORS, PRODUCT, PRODUCT_IMAGES } from "@/lib/products";
+import { COLORS, getProductBySlug } from "@/lib/products";
 import { formatPrice } from "@/lib/utils";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { ProductThumbnail } from "@/components/ProductThumbnail";
 
 const PAYMENT_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
 
@@ -65,22 +65,21 @@ export function CartDrawer() {
                 <ul className="space-y-5">
                   {lines.map((line) => {
                     const color = COLORS.find((c) => c.id === line.color)!;
+                    const product = getProductBySlug(line.slug);
                     return (
                       <li key={line.id} className="flex gap-4">
-                        <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-ink-50 dark:bg-ink-800">
-                          <Image
-                            src={PRODUCT_IMAGES[line.color]}
-                            alt={`${color.name} Hidden Pocket Corduroy Shorts`}
-                            fill
-                            sizes="80px"
-                            className="object-cover object-top"
-                          />
-                        </div>
+                        <ProductThumbnail
+                          slug={line.slug}
+                          color={line.color}
+                          alt={`${color.name} ${product?.name ?? "Hidden Pocket"}`}
+                          className="h-20 w-20 flex-shrink-0 rounded-2xl bg-ink-50 dark:bg-ink-800"
+                          imageClassName="p-1.5"
+                        />
                         <div className="flex-1">
                           <div className="flex items-start justify-between">
                             <div>
                               <p className="text-sm font-medium text-ink-900 dark:text-ink-50">
-                                {PRODUCT.name}
+                                {product?.name ?? "Hidden Pocket"}
                               </p>
                               <p className="mt-0.5 text-xs text-ink-500 dark:text-ink-400">
                                 {color.name} &middot; {line.size}
@@ -122,7 +121,7 @@ export function CartDrawer() {
                               </button>
                             </div>
                             <span className="text-sm font-medium text-ink-900 dark:text-ink-50">
-                              {formatPrice(PRODUCT.price * line.quantity)}
+                              {formatPrice((product?.price ?? 0) * line.quantity)}
                             </span>
                           </div>
                         </div>

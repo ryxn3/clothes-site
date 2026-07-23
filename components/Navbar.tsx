@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   HiOutlineShoppingBag,
@@ -16,8 +17,10 @@ import { useWishlist } from "@/components/providers/WishlistContext";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import { cn } from "@/lib/utils";
 
-const LINKS = [
-  { href: "#product", label: "Shop" },
+const PAGE_LINKS = [{ href: "/shop", label: "Shop" }];
+
+const HASH_LINKS = [
+  { href: "#product", label: "Shorts" },
   { href: "#features", label: "Features" },
   { href: "#reviews", label: "Reviews" },
   { href: "#faq", label: "FAQ" },
@@ -27,8 +30,10 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { itemCount, openCart } = useCart();
-  const { colors } = useWishlist();
+  const { items: wishlistItems } = useWishlist();
   const { theme, toggleTheme } = useTheme();
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     function handleScroll() {
@@ -40,7 +45,11 @@ export function Navbar() {
 
   function handleNavClick(href: string) {
     setMobileOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    if (pathname === "/") {
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(`/${href}`);
+    }
   }
 
   return (
@@ -64,7 +73,20 @@ export function Navbar() {
         </Link>
 
         <ul className="hidden items-center gap-8 md:flex">
-          {LINKS.map((link) => (
+          {PAGE_LINKS.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className={cn(
+                  "text-sm font-medium transition-colors hover:text-accent",
+                  scrolled ? "text-ink-700 dark:text-ink-300" : "text-ink-200"
+                )}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+          {HASH_LINKS.map((link) => (
             <li key={link.href}>
               <button
                 type="button"
@@ -97,7 +119,7 @@ export function Navbar() {
 
           <button
             type="button"
-            aria-label={`Wishlist (${colors.length} items)`}
+            aria-label={`Wishlist (${wishlistItems.length} items)`}
             className={cn(
               "relative flex h-10 w-10 items-center justify-center rounded-full text-lg transition-colors",
               scrolled
@@ -106,9 +128,9 @@ export function Navbar() {
             )}
           >
             <HiOutlineHeart />
-            {colors.length > 0 && (
+            {wishlistItems.length > 0 && (
               <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-semibold text-white">
-                {colors.length}
+                {wishlistItems.length}
               </span>
             )}
           </button>
@@ -167,7 +189,18 @@ export function Navbar() {
               </button>
             </div>
             <ul className="flex flex-col items-center gap-8 pt-10">
-              {LINKS.map((link) => (
+              {PAGE_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="font-display text-2xl text-ink-50"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              {HASH_LINKS.map((link) => (
                 <li key={link.href}>
                   <button
                     type="button"

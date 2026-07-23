@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineXMark, HiStar } from "react-icons/hi2";
 import { ColorSelector } from "@/components/ColorSelector";
 import { SizeSelector } from "@/components/SizeSelector";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { COLORS, PRODUCT, PRODUCT_IMAGES } from "@/lib/products";
+import { ProductThumbnail } from "@/components/ProductThumbnail";
+import { PRODUCT, getProductBySlug } from "@/lib/products";
 import { ColorId, SizeId } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/components/providers/CartContext";
@@ -15,9 +15,10 @@ import { useCart } from "@/components/providers/CartContext";
 interface QuickViewModalProps {
   color: ColorId | null;
   onClose: () => void;
+  slug?: string;
 }
 
-export function QuickViewModal({ color, onClose }: QuickViewModalProps) {
+export function QuickViewModal({ color, onClose, slug = PRODUCT.slug }: QuickViewModalProps) {
   const [selectedColor, setSelectedColor] = useState<ColorId>(color ?? "black");
   const [size, setSize] = useState<SizeId>("M");
   const { addToCart } = useCart();
@@ -41,7 +42,7 @@ export function QuickViewModal({ color, onClose }: QuickViewModalProps) {
     };
   }, [color, onClose]);
 
-  const swatch = COLORS.find((c) => c.id === selectedColor)!;
+  const product = getProductBySlug(slug) ?? PRODUCT;
 
   return (
     <AnimatePresence>
@@ -60,7 +61,7 @@ export function QuickViewModal({ color, onClose }: QuickViewModalProps) {
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label={`Quick view - ${PRODUCT.name}`}
+            aria-label={`Quick view - ${product.name}`}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -77,30 +78,28 @@ export function QuickViewModal({ color, onClose }: QuickViewModalProps) {
               <HiOutlineXMark className="text-xl" />
             </button>
 
-            <div className="relative h-64 overflow-hidden rounded-2xl bg-ink-50 dark:bg-ink-800 sm:h-full">
-              <Image
-                src={PRODUCT_IMAGES[selectedColor]}
-                alt={`${swatch.name} Hidden Pocket Corduroy Shorts`}
-                fill
-                sizes="(max-width: 640px) 100vw, 50vw"
-                className="object-cover object-top"
-              />
-            </div>
+            <ProductThumbnail
+              slug={slug}
+              color={selectedColor}
+              alt={`${product.name}`}
+              className="h-64 rounded-2xl bg-ink-50 dark:bg-ink-800 sm:h-full"
+              imageClassName="p-6"
+            />
 
             <div>
               <h2 className="font-display text-2xl text-ink-900 dark:text-ink-50">
-                {PRODUCT.name}
+                {product.name}
               </h2>
               <div className="mt-2 flex items-center gap-2 text-accent">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <HiStar key={i} />
                 ))}
                 <span className="text-sm text-ink-500 dark:text-ink-400">
-                  {PRODUCT.rating}
+                  {product.rating}
                 </span>
               </div>
               <p className="mt-4 font-display text-2xl text-ink-900 dark:text-ink-50">
-                {formatPrice(PRODUCT.price)}
+                {formatPrice(product.price)}
               </p>
               <div className="mt-6 space-y-6">
                 <ColorSelector value={selectedColor} onChange={setSelectedColor} />
@@ -109,7 +108,7 @@ export function QuickViewModal({ color, onClose }: QuickViewModalProps) {
               <MagneticButton
                 className="mt-8 w-full"
                 onClick={() => {
-                  addToCart(selectedColor, size, 1);
+                  addToCart(slug, selectedColor, size, 1);
                   onClose();
                 }}
               >

@@ -2,6 +2,7 @@ import {
   ColorId,
   FaqItem,
   Hotspot,
+  Product,
   ProductColor,
   Review,
   SizeGuideRow,
@@ -10,10 +11,15 @@ import {
 } from "./types";
 import { withBasePath } from "./utils";
 
+export const FLAGSHIP_SLUG = "hidden-pocket-corduroy-shorts";
+
 export const PRODUCT = {
+  slug: FLAGSHIP_SLUG,
   name: "Hidden Pocket Corduroy Shorts",
   price: 45.0,
   currency: "usd",
+  garment: "shorts" as const,
+  tagline: "The shorts that keep your essentials hidden.",
   rating: 4.9,
   reviewCount: 1284,
   material: "100% Premium Cotton Corduroy",
@@ -23,6 +29,68 @@ export const PRODUCT = {
   description:
     "Premium 100% Cotton Corduroy Shorts featuring a concealed zip pocket for ultimate security and comfort.",
 };
+
+/** The rest of the Hidden Pocket collection — same concealed-pocket concept, different garments. */
+export const PRODUCTS: Product[] = [
+  {
+    slug: "hidden-pocket-sweatpants",
+    name: "Hidden Pocket Sweatpants",
+    price: 58,
+    garment: "sweatpants",
+    tagline: "Everyday comfort, quietly secured.",
+    description:
+      "Relaxed-fit sweatpants in soft brushed fleece, with the same concealed interior zip pocket that keeps your essentials hidden and secure.",
+    material: "80% Cotton / 20% Polyester Brushed Fleece",
+    feature: "Hidden Interior Zip Pocket",
+    rating: 4.8,
+    reviewCount: 642,
+  },
+  {
+    slug: "hidden-pocket-hoodie",
+    name: "Hidden Pocket Hoodie",
+    price: 68,
+    garment: "hoodie",
+    tagline: "Cozy on the outside, covert on the inside.",
+    description:
+      "A heavyweight pullover hoodie with a discreet zippered pocket built into the kangaroo pocket, so your phone and cards stay put through every wear.",
+    material: "100% Heavyweight Cotton Fleece",
+    feature: "Hidden Interior Zip Pocket",
+    rating: 4.9,
+    reviewCount: 891,
+  },
+  {
+    slug: "hidden-pocket-zip-hoodie",
+    name: "Hidden Pocket Zip Hoodie",
+    price: 72,
+    garment: "zip-hoodie",
+    tagline: "Zip up. Lock it in.",
+    description:
+      "A full-zip hoodie layered with a hidden interior security pocket — ideal for travel days when you need your hands free and your valuables closer.",
+    material: "100% Heavyweight Cotton Fleece",
+    feature: "Hidden Interior Zip Pocket",
+    rating: 4.8,
+    reviewCount: 503,
+  },
+  {
+    slug: "hidden-pocket-tee",
+    name: "Hidden Pocket Tee",
+    price: 38,
+    garment: "tee",
+    tagline: "Simple on top. Secure underneath.",
+    description:
+      "A soft, everyday tee with a slim concealed pocket sewn into the interior hem — barely-there storage for a card or key when you're keeping it light.",
+    material: "100% Combed Cotton Jersey",
+    feature: "Hidden Interior Zip Pocket",
+    rating: 4.7,
+    reviewCount: 312,
+  },
+];
+
+export const ALL_PRODUCTS: Product[] = [PRODUCT, ...PRODUCTS];
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return ALL_PRODUCTS.find((p) => p.slug === slug);
+}
 
 export const COLORS: ProductColor[] = [
   { id: "black", name: "Black", hex: "#1a1a1a", shadeHex: "#000000" },
