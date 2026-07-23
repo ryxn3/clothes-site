@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineXMark, HiOutlineMinus, HiOutlinePlus, HiOutlineShoppingBag } from "react-icons/hi2";
 import { useCart } from "@/components/providers/CartContext";
@@ -9,31 +8,15 @@ import { formatPrice } from "@/lib/utils";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { ShortsIllustration } from "@/components/ui/ShortsIllustration";
 
+const PAYMENT_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
+
 export function CartDrawer() {
   const { lines, isOpen, closeCart, removeLine, updateQuantity, subtotal, itemCount } =
     useCart();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  async function handleCheckout() {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lines }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setError(data.error ?? "Something went wrong. Please try again.");
-      }
-    } catch {
-      setError("Unable to reach checkout. Please try again.");
-    } finally {
-      setLoading(false);
+  function handleCheckout() {
+    if (PAYMENT_LINK) {
+      window.location.href = PAYMENT_LINK;
     }
   }
 
@@ -154,17 +137,18 @@ export function CartDrawer() {
                   <span>Subtotal</span>
                   <span>{formatPrice(subtotal)}</span>
                 </div>
-                {error && (
+                {!PAYMENT_LINK && (
                   <p role="alert" className="mb-3 text-xs text-red-500">
-                    {error}
+                    Checkout isn&apos;t configured yet — set
+                    NEXT_PUBLIC_STRIPE_PAYMENT_LINK to enable it.
                   </p>
                 )}
                 <MagneticButton
                   className="w-full"
                   onClick={handleCheckout}
-                  disabled={loading}
+                  disabled={!PAYMENT_LINK}
                 >
-                  {loading ? "Redirecting…" : "Checkout Securely"}
+                  Checkout Securely
                 </MagneticButton>
                 <p className="mt-3 text-center text-xs text-ink-400">
                   Apple Pay, Google Pay, PayPal, Visa &amp; Mastercard accepted
