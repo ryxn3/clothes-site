@@ -1,5 +1,6 @@
 import { Hero } from "@/components/sections/Hero";
 import { FeaturesSection } from "@/components/sections/FeaturesSection";
+import { ProductPhotoShowcase } from "@/components/sections/ProductPhotoShowcase";
 import { ProductSection } from "@/components/sections/ProductSection";
 import { LifestyleShowcase } from "@/components/sections/LifestyleShowcase";
 import { ColorGallery } from "@/components/sections/ColorGallery";
@@ -13,6 +14,7 @@ export default function HomePage() {
     <main>
       <Hero />
       <FeaturesSection />
+      <ProductPhotoShowcase />
       <ProductSection />
       <LifestyleShowcase />
       <ColorGallery />

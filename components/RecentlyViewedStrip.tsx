@@ -1,8 +1,8 @@
 "use client";
 
-import { ShortsIllustration } from "@/components/ui/ShortsIllustration";
+import Image from "next/image";
 import { useRecentlyViewed } from "@/components/providers/RecentlyViewedContext";
-import { COLORS, PRODUCT } from "@/lib/products";
+import { COLORS, PRODUCT, PRODUCT_IMAGES } from "@/lib/products";
 
 export function RecentlyViewedStrip() {
   const { colors } = useRecentlyViewed();
@@ -23,11 +23,15 @@ export function RecentlyViewedStrip() {
                 key={colorId}
                 className="flex w-32 flex-shrink-0 flex-col items-center rounded-2xl border border-ink-100 bg-ink-50/60 p-3 dark:border-ink-800 dark:bg-ink-900/60"
               >
-                <ShortsIllustration
-                  hex={color.hex}
-                  shadeHex={color.shadeHex}
-                  className="h-20 w-full"
-                />
+                <div className="relative h-20 w-full overflow-hidden rounded-xl">
+                  <Image
+                    src={PRODUCT_IMAGES[colorId]}
+                    alt={`${color.name} Hidden Pocket Corduroy Shorts`}
+                    fill
+                    sizes="128px"
+                    className="object-cover object-top"
+                  />
+                </div>
                 <span className="mt-2 text-center text-xs font-medium text-ink-700 dark:text-ink-300">
                   {PRODUCT.name} &mdash; {color.name}
                 </span>

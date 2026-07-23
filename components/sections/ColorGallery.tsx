@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { ShortsIllustration } from "@/components/ui/ShortsIllustration";
 import { Reveal } from "@/components/ui/Reveal";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { QuickViewModal } from "@/components/QuickViewModal";
-import { COLORS } from "@/lib/products";
+import { COLORS, PRODUCT_IMAGES } from "@/lib/products";
 import { ColorId } from "@/lib/types";
 
 export function ColorGallery() {
@@ -30,11 +30,13 @@ export function ColorGallery() {
                 whileHover={{ y: -6 }}
                 className="group flex w-full flex-col items-center rounded-3xl border border-ink-200/70 bg-white p-6 shadow-sm transition-shadow duration-300 hover:shadow-premium dark:border-ink-800 dark:bg-ink-900"
               >
-                <div className="relative w-full overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800">
-                  <ShortsIllustration
-                    hex={color.hex}
-                    shadeHex={color.shadeHex}
-                    className="h-40 w-full scale-100 p-4 transition-transform duration-500 group-hover:scale-110"
+                <div className="relative h-48 w-full overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800">
+                  <Image
+                    src={PRODUCT_IMAGES[color.id]}
+                    alt={`${color.name} Hidden Pocket Corduroy Shorts`}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-110"
                   />
                   <span className="absolute inset-x-0 bottom-0 translate-y-full bg-ink-900/80 py-2 text-center text-xs font-medium uppercase tracking-wide text-ink-50 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                     Quick View

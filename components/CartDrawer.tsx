@@ -1,12 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineXMark, HiOutlineMinus, HiOutlinePlus, HiOutlineShoppingBag } from "react-icons/hi2";
 import { useCart } from "@/components/providers/CartContext";
-import { COLORS, PRODUCT } from "@/lib/products";
+import { COLORS, PRODUCT, PRODUCT_IMAGES } from "@/lib/products";
 import { formatPrice } from "@/lib/utils";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { ShortsIllustration } from "@/components/ui/ShortsIllustration";
 
 const PAYMENT_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
 
@@ -67,11 +67,13 @@ export function CartDrawer() {
                     const color = COLORS.find((c) => c.id === line.color)!;
                     return (
                       <li key={line.id} className="flex gap-4">
-                        <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-ink-50 dark:bg-ink-800">
-                          <ShortsIllustration
-                            hex={color.hex}
-                            shadeHex={color.shadeHex}
-                            className="h-full w-full p-2"
+                        <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-ink-50 dark:bg-ink-800">
+                          <Image
+                            src={PRODUCT_IMAGES[line.color]}
+                            alt={`${color.name} Hidden Pocket Corduroy Shorts`}
+                            fill
+                            sizes="80px"
+                            className="object-cover object-top"
                           />
                         </div>
                         <div className="flex-1">

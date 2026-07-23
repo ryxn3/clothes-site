@@ -1,4 +1,5 @@
 import {
+  ColorId,
   FaqItem,
   Hotspot,
   ProductColor,
@@ -7,6 +8,7 @@ import {
   SizeId,
   StatItem,
 } from "./types";
+import { withBasePath } from "./utils";
 
 export const PRODUCT = {
   name: "Hidden Pocket Corduroy Shorts",
@@ -31,6 +33,18 @@ export const COLORS: ProductColor[] = [
   { id: "navy", name: "Navy Blue", hex: "#1f2a44", shadeHex: "#0f1526" },
   { id: "royal", name: "Royal Blue", hex: "#2b4fa3", shadeHex: "#1a3070" },
 ];
+
+export const PRODUCT_IMAGES: Record<ColorId, string> = {
+  black: withBasePath("/products/black.jpg"),
+  white: withBasePath("/products/white.jpg"),
+  beige: withBasePath("/products/beige.jpg"),
+  pink: withBasePath("/products/pink.jpg"),
+  orange: withBasePath("/products/orange.jpg"),
+  navy: withBasePath("/products/navy.jpg"),
+  royal: withBasePath("/products/royal.jpg"),
+};
+
+export const HERO_DETAIL_IMAGE = withBasePath("/products/hero-detail.jpg");
 
 export const SIZES: SizeId[] = ["XS", "S", "M", "L", "XL", "XXL"];
 

@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineXMark, HiStar } from "react-icons/hi2";
-import { ShortsIllustration } from "@/components/ui/ShortsIllustration";
 import { ColorSelector } from "@/components/ColorSelector";
 import { SizeSelector } from "@/components/SizeSelector";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { COLORS, PRODUCT } from "@/lib/products";
+import { COLORS, PRODUCT, PRODUCT_IMAGES } from "@/lib/products";
 import { ColorId, SizeId } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/components/providers/CartContext";
@@ -77,11 +77,13 @@ export function QuickViewModal({ color, onClose }: QuickViewModalProps) {
               <HiOutlineXMark className="text-xl" />
             </button>
 
-            <div className="flex items-center justify-center rounded-2xl bg-ink-50 p-6 dark:bg-ink-800">
-              <ShortsIllustration
-                hex={swatch.hex}
-                shadeHex={swatch.shadeHex}
-                className="h-64 w-full"
+            <div className="relative h-64 overflow-hidden rounded-2xl bg-ink-50 dark:bg-ink-800 sm:h-full">
+              <Image
+                src={PRODUCT_IMAGES[selectedColor]}
+                alt={`${swatch.name} Hidden Pocket Corduroy Shorts`}
+                fill
+                sizes="(max-width: 640px) 100vw, 50vw"
+                className="object-cover object-top"
               />
             </div>
 
